@@ -1,0 +1,27 @@
+{
+  "name": "restful-api-express-mongoose",
+  "version": "1.0.0",
+  "description": "Example of a RESTful API built with Node.js, Express.js and Mongoose.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": "8.11.2",
+    "npm": "5.6.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "cors": "^2.8.4",
+    "express": "^4.13.3",
+    "mongoose": "^4.2.9",
+    "mongoose-sequence": "^4.0.1",
+    "nodemailer": "^4.6.8",
+    "npm": "^6.4.1",
+    "object-assign": "^4.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}

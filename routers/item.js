@@ -74,7 +74,8 @@ itemRouter
         item.category = request.body.category;
         item.breakfast = request.body.breakfast;
         item.lunch = request.body.lunch;
-        item.dinner = request.body.dinner;     
+        item.dinner = request.body.dinner;   
+        item.food_type = request.body.food_type;     
         
         item.save();
 

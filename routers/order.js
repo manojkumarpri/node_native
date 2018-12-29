@@ -47,7 +47,7 @@ orderRouter
       // for(var i=0;i<order.food_id.length;i++){
       //   mailOptions.text="Your order placed successfully. You will receive your order soon.Your order details are,"+"/r/n Food: "+order.food_name[i]+" /r/nQuantity is: "+order.quantity[i]+"/r/nTotal amount is "+order.total_price+" /r/nYour invoice number is: "+order.invoice_number+" /r/nHave a healthy food!!!... Order again!!!...";
       // }
-      mailOptions.text="your order placed successfully"+"/r/n total_price is: "
+      mailOptions.text="your order placed successfully."
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           console.log(error);

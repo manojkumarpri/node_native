@@ -38,6 +38,10 @@ var itemSchema = new Schema({
     type: Number,
     required: true,
     default: 50
+  },
+  food_type: {
+    type: String,
+    required: true
   }
 
 

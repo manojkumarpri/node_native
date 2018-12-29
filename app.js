@@ -26,6 +26,7 @@ var mongoose = require('mongoose');
 var uri = 'mongodb://vicky:vickymaha123@ds051883.mlab.com:51883/react_food';
 
 var options = {
+  
   "server" : {
     "socketOptions" : {
       "keepAlive" : 300000,

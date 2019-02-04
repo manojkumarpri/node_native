@@ -43,18 +43,18 @@ orderRouter
     response.status(201).send(order);
 
     // nodemailer
-      mailOptions.to=order.user_email;
-      // for(var i=0;i<order.food_id.length;i++){
-      //   mailOptions.text="Your order placed successfully. You will receive your order soon.Your order details are,"+"/r/n Food: "+order.food_name[i]+" /r/nQuantity is: "+order.quantity[i]+"/r/nTotal amount is "+order.total_price+" /r/nYour invoice number is: "+order.invoice_number+" /r/nHave a healthy food!!!... Order again!!!...";
-      // }
-      mailOptions.text="your order placed successfully."
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent to: ' +mailOptions.to );
-        }
-      });
+      // mailOptions.to=order.user_email;
+      // // for(var i=0;i<order.food_id.length;i++){
+      // //   mailOptions.text="Your order placed successfully. You will receive your order soon.Your order details are,"+"/r/n Food: "+order.food_name[i]+" /r/nQuantity is: "+order.quantity[i]+"/r/nTotal amount is "+order.total_price+" /r/nYour invoice number is: "+order.invoice_number+" /r/nHave a healthy food!!!... Order again!!!...";
+      // // }
+      // mailOptions.text="your order placed successfully."
+      // transporter.sendMail(mailOptions, function(error, info){
+      //   if (error) {
+      //     console.log(error);
+      //   } else {
+      //     console.log('Email sent to: ' +mailOptions.to );
+      //   }
+      // });
 
   })
   .get(function (request, response) {
@@ -126,6 +126,7 @@ orderRouter
         order.delivered_on = request.body.delivered_on;
         order.user_email = request.body.user_email;
         order.indexOf = request.body.indexOf;
+        order.gstin = request.body.gstin;
         order.save();
 
         response.json(order);
@@ -339,5 +340,27 @@ orderRouter
 
     //response.status(201).send(order);
 
+  })
+
+  orderRouter
+  .route('/order/:invoice_number')
+  .get(function (request, response) {
+
+    console.log('GET /Orders by/:invoice_number');
+
+    var invoice_number = request.params.invoice_number;
+
+
+    Order.findOne({invoice_number:invoice_number }, function (error, order) {
+
+      if (error) {
+        response.status(500).send(error);
+        return;
+      }
+      //console.log(provider.filter(a=>((a.food_id.includes(parseInt(foodId))))));
+      console.log(order);
+      response.json(order);
+
+    });
   })
 module.exports = orderRouter;

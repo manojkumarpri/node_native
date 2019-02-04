@@ -81,6 +81,14 @@ var orderSchema = new Schema({
     type: Array,
     required:true
   },
+  gstin: {
+    type: Array,
+    required:true
+  },
+  provider_address: {
+    type: String,
+    required: true
+  }
   
 
 }, { timestamps:true,collections: 'order',usePushEach: true});

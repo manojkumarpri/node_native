@@ -124,7 +124,7 @@ adRouter.route('/sendMail').get(function (request,response){
 adRouter.route('/count').get(function (request,response){
 
 var total={"totalOrderDeliverd":0,"totalOrderDispatched":0,"totalOrderCancelled":0,"todayOrderDeliverd":0,"todayOrderDispatched":0,"todayOrderCancelled":0,
-"totalUsers":0,"activeUsers":0,"todayCollections":0,"paidForProviders":0,"profit":0,"loss":0,"totalProviders":0,"activeProviders":0}
+"totalUsers":0,"activeUsers":0,"todayCollections":0,"paidForProviders":0,"profit":0,"loss":0,"totalProviders":0,"activeProviders":0,"usedProviders":0}
   
   Order.count({order_status: 'delivered'}, function(err, orderDeliverd) {
            console.log('Total delivered order count is ' + orderDeliverd);
@@ -142,36 +142,41 @@ var total={"totalOrderDeliverd":0,"totalOrderDispatched":0,"totalOrderCancelled"
            //response.json({ totalOrderCancelled:orderCancelled });
 
             Order.find({order_status: "delivered"}, function(err, delivered) {
-           //console.log('Today delivered order count is ' + delivered);
-           // var updatedAt=delivered.updatedAt;
-           // for (var i=0;i<delivered.length;i++){
-           //    var 
-           // }
-           // total.todayOrderDeliverd=delivered;
-           //response.json({ orderDeliverd:delivered });
+
            const d=(new Date()).setHours(0,0,0,0);
 
            Order.count({updatedAt:{ $gte :d } ,order_status: "dispatched"}, function(err, dispatched) {
            console.log('Today dispatched ordered count is ' + dispatched);
            total.todayOrderDispatched=dispatched;
-          Order.count({updatedAt : { $gte : d },order_status: "cancelled"}, function(err, cancelled) {
-         console.log('Today cancelled order count is ' + cancelled);
-         total.todayOrderCancelled=cancelled;
-         //response.json({ orderCancelled:cancelled });
-         User.count({}, function(err, user) {
-         console.log('Total user count is ' + user);
-         total.totalUsers=user;
-         //response.json({totalUsers:total.totalUsers});
-         Order.count({updatedAt : { $gte : d }}, function(err, order) {
-         console.log('Active user count is ' + order);
-         total.activeUsers=order;
-         //response.json({ activeUsers:order });
+
+           Order.count({updatedAt : { $gte : d },order_status: "cancelled"}, function(err, cancelled) {
+           console.log('Today cancelled order count is ' + cancelled);
+           total.todayOrderCancelled=cancelled;
+           //response.json({ orderCancelled:cancelled });
+
+            Order.count({updatedAt:{ $gte :d } ,order_status: "delivered"}, function(err, delivered) {
+           console.log('Today delivered ordered count is ' + delivered);
+           total.todayOrderDeliverd=delivered;
+
+           User.count({}, function(err, user) {
+           console.log('Total user count is ' + user);
+           total.totalUsers=user;
+           //response.json({totalUsers:total.totalUsers});
+
+           // Order.count({updatedAt : { $gte : d }}, function(err, order) {
+           // console.log('Active user count is ' + order);
+           // total.activeUsers=order;
+           //response.json({ activeUsers:order });
     
-     Order.find({updatedAt : { $gte : d }}, function(err, order) {
-      var total1=0;
-      for(var i=0;i<order.length;i++){
-          total1+=order[i].total_price
-      }
+           Order.find({updatedAt : { $gte : d }}, function(err, order) {
+            var total1=0;
+            if(order.length>0) {
+              for(var i=0;i<order.length;i++){
+                  total1+=order[i].total_price
+              }
+            } else {
+              total1+=0;
+            }
          console.log('today collection is ' + total1);
          total.todayCollections=total1;
          total.paidForProviders=(((total1)*(75))/(100));
@@ -199,8 +204,30 @@ var total={"totalOrderDeliverd":0,"totalOrderDispatched":0,"totalOrderCancelled"
          Provider.count({isActive: true}, function(err, activeProviders) {
            console.log('Active provider count is ' + activeProviders);
            total.activeProviders=activeProviders;
-           console.log(total);
+
+             Order.find({updatedAt: { $gte : d }}, function(err, order) {
+              var u_id=[];
+              var p_id=[];
+             for (var i=0;i<order.length;i++) {
+                  u_id.push(order[i].user_id);
+                  p_id.push(order[i].provider_id);
+             } 
+             let unique = [...new Set(u_id)];
+             let unique1 = [...new Set(p_id)];
+             console.log("Users wo duplicates" +unique);
+             var active_user_id=unique.length;
+             var active_provider_id=unique1.length;
+              total.activeUsers=active_user_id;
+              total.usedProviders=active_provider_id;
+              //console.log("Active user count is:" +total.activeUsers);
+               console.log(total);
            response.json({ total});
+             // var uSet = new Set(u_id);
+             // console.log(u_id);
+             //console.log('all orderd users id wo duplicates ' + uSet);
+           // console.log(total);
+           // response.json({ total});
+                              });
                             });
                           });
                        });

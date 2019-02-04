@@ -5,8 +5,11 @@ var providerSchema = new Schema({
 
   food_id:{
     type: Array,
-    
     required: true
+  },
+  gstin: {
+  	type: String,
+  	required: true
   },
   provider_name: {
     type: String,

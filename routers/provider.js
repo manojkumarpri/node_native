@@ -116,6 +116,7 @@ providerRouter
         item.isActive = request.body.isActive;
         item.rating = request.body.rating;
         item.rating_count = request.body.rating_count;
+        item.gstin = request.body.gstin;
         
         item.save();
         console.log(item);
